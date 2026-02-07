@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Arpita</title>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(to bottom, #fdfbfb 0%, #f7f3f0 100%);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Photo background layer */
+        .photo-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(3px) grayscale(30%);
+            /* TO ADD PHOTO: Uncomment the line below and replace 'your-photo.jpg' with your photo filename */
+            /* background-image: url('your-photo.jpg'); */
+        }
+
+        /* Vintage paper texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139, 69, 19, 0.02) 2px, rgba(139, 69, 19, 0.02) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(139, 69, 19, 0.02) 2px, rgba(139, 69, 19, 0.02) 4px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Ornamental border */
+        .border-frame {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 3px double #8b4513;
+            pointer-events: none;
+            z-index: 2;
+            box-shadow: inset 0 0 50px rgba(139, 69, 19, 0.1);
+        }
+
+        .border-frame::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px solid rgba(139, 69, 19, 0.3);
+        }
+
+        /* Corner ornaments */
+        .corner {
+            position: fixed;
+            width: 80px;
+            height: 80px;
+            z-index: 3;
+            opacity: 0.6;
+        }
+
+        .corner.tl {
+            top: 35px;
+            left: 35px;
+            border-top: 2px solid #8b4513;
+            border-left: 2px solid #8b4513;
+        }
+
+        .corner.tr {
+            top: 35px;
+            right: 35px;
+            border-top: 2px solid #8b4513;
+            border-right: 2px solid #8b4513;
+        }
+
+        .corner.bl {
+            bottom: 35px;
+            left: 35px;
+            border-bottom: 2px solid #8b4513;
+            border-left: 2px solid #8b4513;
+        }
+
+        .corner.br {
+            bottom: 35px;
+            right: 35px;
+            border-bottom: 2px solid #8b4513;
+            border-right: 2px solid #8b4513;
+        }
+
+        /* Falling petals */
+        .petal {
+            position: fixed;
+            width: 12px;
+            height: 16px;
+            background: linear-gradient(135deg, #dc143c 0%, #8b0000 100%);
+            border-radius: 50% 0 50% 0;
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 5;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg) translateX(0);
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        /* Main container */
+        .scene {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        /* Title */
+        .title {
+            margin-bottom: 3rem;
+            text-align: center;
+            animation: fadeInDown 1.5s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .title h1 {
+            font-family: 'Libre Baskerville', serif;
+            font-size: clamp(3rem, 8vw, 5rem);
+            color: #2c2c2c;
+            letter-spacing: 0.3rem;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+        }
+
+        .divider {
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #8b4513, transparent);
+            margin: 1.5rem auto;
+        }
+
+        .subtitle {
+            font-family: 'Libre Baskerville', serif;
+            font-style: italic;
+            font-size: 1.3rem;
+            color: #666;
+            letter-spacing: 0.15rem;
+        }
+
+        /* Rose container */
+        .rose-container {
+            position: relative;
+            cursor: pointer;
+            animation: fadeInUp 2s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .rose-wrapper {
+            position: relative;
+            display: inline-block;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .rose-wrapper:hover .single-rose {
+            transform: scale(1.05);
+        }
+
+        /* Single Rose */
+        .single-rose {
+            font-size: clamp(12rem, 20vw, 16rem);
+            display: block;
+            filter: drop-shadow(0 15px 40px rgba(220, 20, 60, 0.4));
+            animation: gentleFloat 4s ease-in-out infinite;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(-5deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        /* Bouquet - Initially hidden */
+        .bouquet {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            width: 500px;
+            height: 600px;
+        }
+
+        .bouquet.active {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Wrapper paper */
+        .wrapper {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 380px;
+            height: 300px;
+            background: linear-gradient(135deg, 
+                rgba(255, 250, 240, 0.9) 0%, 
+                rgba(255, 240, 220, 0.95) 50%, 
+                rgba(250, 235, 215, 0.9) 100%);
+            clip-path: polygon(
+                10% 0%, 90% 0%, 
+                95% 30%, 100% 100%, 
+                0% 100%, 5% 30%
+            );
+            box-shadow: 
+                inset 0 0 50px rgba(139, 69, 19, 0.1),
+                0 10px 40px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(139, 69, 19, 0.2);
+            z-index: 2;
+        }
+
+        /* Ribbon */
+        .ribbon {
+            position: absolute;
+            bottom: 180px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 80px;
+            background: linear-gradient(135deg, #dc143c 0%, #8b0000 100%);
+            z-index: 3;
+            box-shadow: 0 5px 20px rgba(220, 20, 60, 0.4);
+        }
+
+        .ribbon::before,
+        .ribbon::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .ribbon::before {
+            left: -40px;
+            border-top: 40px solid #dc143c;
+            border-left: 40px solid transparent;
+        }
+
+        .ribbon::after {
+            right: -40px;
+            border-top: 40px solid #8b0000;
+            border-right: 40px solid transparent;
+        }
+
+        .ribbon-tail {
+            position: absolute;
+            bottom: 140px;
+            width: 25px;
+            height: 60px;
+            background: linear-gradient(135deg, #dc143c 0%, #8b0000 100%);
+            z-index: 1;
+        }
+
+        .ribbon-tail.left {
+            left: 35%;
+            transform: rotate(-15deg);
+            clip-path: polygon(0 0, 100% 0, 70% 100%, 0% 90%);
+        }
+
+        .ribbon-tail.right {
+            right: 35%;
+            transform: rotate(15deg);
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 30% 100%);
+        }
+
+        /* Roses arrangement */
+        .roses {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 350px;
+            z-index: 4;
+        }
+
+        .bouquet-rose {
+            position: absolute;
+            font-size: 4rem;
+            filter: drop-shadow(0 5px 15px rgba(220, 20, 60, 0.3));
+            animation: roseAppear 0.8s ease-out backwards;
+        }
+
+        @keyframes roseAppear {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.5) rotate(0deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Arranged like a real bouquet - center roses larger, outer roses smaller */
+        /* Center row - tallest */
+        .bouquet-rose:nth-child(1) { 
+            top: 10px; left: 50%; transform: translateX(-50%) rotate(-5deg); 
+            font-size: 4.5rem; animation-delay: 0.1s; 
+        }
+        .bouquet-rose:nth-child(2) { 
+            top: 25px; left: 42%; transform: translateX(-50%) rotate(8deg); 
+            font-size: 4.2rem; animation-delay: 0.15s; 
+        }
+        .bouquet-rose:nth-child(3) { 
+            top: 30px; left: 58%; transform: translateX(-50%) rotate(-10deg); 
+            font-size: 4.2rem; animation-delay: 0.2s; 
+        }
+        
+        /* Middle row */
+        .bouquet-rose:nth-child(4) { 
+            top: 70px; left: 35%; transform: translateX(-50%) rotate(12deg); 
+            font-size: 4rem; animation-delay: 0.25s; 
+        }
+        .bouquet-rose:nth-child(5) { 
+            top: 65px; left: 50%; transform: translateX(-50%) rotate(-8deg); 
+            font-size: 4.3rem; animation-delay: 0.3s; 
+        }
+        .bouquet-rose:nth-child(6) { 
+            top: 75px; left: 65%; transform: translateX(-50%) rotate(6deg); 
+            font-size: 4rem; animation-delay: 0.35s; 
+        }
+        
+        /* Lower middle row */
+        .bouquet-rose:nth-child(7) { 
+            top: 120px; left: 30%; transform: translateX(-50%) rotate(-15deg); 
+            font-size: 3.8rem; animation-delay: 0.4s; 
+        }
+        .bouquet-rose:nth-child(8) { 
+            top: 115px; left: 45%; transform: translateX(-50%) rotate(10deg); 
+            font-size: 3.9rem; animation-delay: 0.45s; 
+        }
+        .bouquet-rose:nth-child(9) { 
+            top: 110px; left: 55%; transform: translateX(-50%) rotate(-12deg); 
+            font-size: 3.9rem; animation-delay: 0.5s; 
+        }
+        .bouquet-rose:nth-child(10) { 
+            top: 125px; left: 70%; transform: translateX(-50%) rotate(8deg); 
+            font-size: 3.8rem; animation-delay: 0.55s; 
+        }
+        
+        /* Bottom row - smallest, filling gaps */
+        .bouquet-rose:nth-child(11) { 
+            top: 170px; left: 25%; transform: translateX(-50%) rotate(-18deg); 
+            font-size: 3.5rem; animation-delay: 0.6s; 
+        }
+        .bouquet-rose:nth-child(12) { 
+            top: 165px; left: 38%; transform: translateX(-50%) rotate(15deg); 
+            font-size: 3.6rem; animation-delay: 0.65s; 
+        }
+        .bouquet-rose:nth-child(13) { 
+            top: 160px; left: 50%; transform: translateX(-50%) rotate(-10deg); 
+            font-size: 3.7rem; animation-delay: 0.7s; 
+        }
+        .bouquet-rose:nth-child(14) { 
+            top: 168px; left: 62%; transform: translateX(-50%) rotate(12deg); 
+            font-size: 3.6rem; animation-delay: 0.75s; 
+        }
+        .bouquet-rose:nth-child(15) { 
+            top: 175px; left: 75%; transform: translateX(-50%) rotate(-8deg); 
+            font-size: 3.5rem; animation-delay: 0.8s; 
+        }
+
+        /* Additional roses for fullness */
+        .bouquet-rose:nth-child(16) { 
+            top: 50px; left: 28%; transform: translateX(-50%) rotate(20deg); 
+            font-size: 3.8rem; animation-delay: 0.85s; 
+        }
+        .bouquet-rose:nth-child(17) { 
+            top: 45px; left: 72%; transform: translateX(-50%) rotate(-15deg); 
+            font-size: 3.8rem; animation-delay: 0.9s; 
+        }
+        .bouquet-rose:nth-child(18) { 
+            top: 100px; left: 40%; transform: translateX(-50%) rotate(-5deg); 
+            font-size: 3.7rem; animation-delay: 0.95s; 
+        }
+        .bouquet-rose:nth-child(19) { 
+            top: 95px; left: 60%; transform: translateX(-50%) rotate(18deg); 
+            font-size: 3.7rem; animation-delay: 1s; 
+        }
+        .bouquet-rose:nth-child(20) { 
+            top: 145px; left: 33%; transform: translateX(-50%) rotate(-20deg); 
+            font-size: 3.5rem; animation-delay: 1.05s; 
+        }
+        .bouquet-rose:nth-child(21) { 
+            top: 140px; left: 67%; transform: translateX(-50%) rotate(16deg); 
+            font-size: 3.5rem; animation-delay: 1.1s; 
+        }
+
+        /* Hide single rose when bouquet is active */
+        .rose-wrapper.show-bouquet .single-rose {
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        /* Circular text */
+        .circle-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 450px;
+            height: 450px;
+            margin-left: -225px;
+            margin-top: -225px;
+            animation: rotate 40s linear infinite;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+        }
+
+        .rose-wrapper.show-bouquet .circle-text {
+            opacity: 0;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .circle-text span {
+            position: absolute;
+            left: 50%;
+            font-family: 'Libre Baskerville', serif;
+            font-size: 0.85rem;
+            color: rgba(139, 69, 19, 0.4);
+            letter-spacing: 0.2rem;
+            transform-origin: 0 225px;
+        }
+
+        /* Hint */
+        .hint {
+            margin-top: 5rem;
+            font-family: 'Libre Baskerville', serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: #8b4513;
+            letter-spacing: 0.15rem;
+            animation: fadeIn 2s ease-out 1s both, pulse 2s ease-in-out 3s infinite;
+            transition: opacity 0.5s ease;
+        }
+
+        .hint.hidden {
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(253, 251, 251, 0.95);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: #fdfbfb;
+            border: 3px double #8b4513;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15),
+                        inset 0 0 50px rgba(139, 69, 19, 0.05);
+            padding: 4rem;
+            max-width: 700px;
+            text-align: center;
+            position: relative;
+            transform: scale(0.9);
+            animation: modalAppear 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes modalAppear {
+            to { transform: scale(1); }
+        }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 1px solid rgba(139, 69, 19, 0.3);
+            pointer-events: none;
+        }
+
+        .modal-content h2 {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 3rem;
+            color: #2c2c2c;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .modal-divider {
+            width: 150px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #8b4513, transparent);
+            margin: 2rem auto;
+        }
+
+        .modal-content p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.15rem;
+            color: #4a4a4a;
+            line-height: 2;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .signature {
+            font-family: 'Libre Baskerville', serif;
+            font-style: italic;
+            font-size: 1.4rem;
+            color: #8b4513;
+            margin-top: 2.5rem;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: 2px solid #8b4513;
+            color: #8b4513;
+            padding: 0.8rem 2.5rem;
+            font-size: 0.9rem;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 0.2rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 2rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .close-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #8b4513;
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .close-btn:hover {
+            color: #fdfbfb;
+        }
+
+        .close-btn:hover::before {
+            left: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .border-frame {
+                top: 15px;
+                left: 15px;
+                right: 15px;
+                bottom: 15px;
+            }
+
+            .corner {
+                width: 50px;
+                height: 50px;
+            }
+
+            .title h1 {
+                letter-spacing: 0.2rem;
+            }
+
+            .bouquet {
+                width: 350px;
+                height: 450px;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+
+            .bouquet.active {
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+
+            .wrapper {
+                width: 280px;
+                height: 220px;
+            }
+
+            .ribbon {
+                bottom: 130px;
+            }
+
+            .ribbon-tail {
+                bottom: 100px;
+                height: 45px;
+            }
+
+            .modal-content {
+                padding: 2.5rem 2rem;
+                margin: 1rem;
+            }
+
+            .modal-content h2 {
+                font-size: 2.2rem;
+            }
+
+            .circle-text {
+                width: 350px;
+                height: 350px;
+                margin-left: -175px;
+                margin-top: -175px;
+            }
+
+            .circle-text span {
+                font-size: 0.7rem;
+                transform-origin: 0 175px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Photo Background -->
+    <div class="photo-background"></div>
+
+    <!-- Ornamental frame -->
+    <div class="border-frame"></div>
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+
+    <!-- Main Scene -->
+    <div class="scene">
+        <div class="title">
+            <h1>Rose Day</h1>
+            <div class="divider"></div>
+            <p class="subtitle">For Arpita</p>
+        </div>
+
+        <div class="rose-container" onclick="showBouquet()">
+            <div class="rose-wrapper" id="roseWrapper">
+                <!-- Single Rose -->
+                <div class="single-rose">🌹</div>
+                
+                <!-- Bouquet -->
+                <div class="bouquet" id="bouquet">
+                    <div class="roses">
+                        <div class="bouquet-rose">🌹</div>
+                        <div class="bouquet-rose">🌹</div>
+                        <div class="bouquet-rose">🌹</div>
+                        <div class="bouquet-rose">🌹</div>
+                        <div class="bouquet-rose">🌹</div>
+                        <div class="bouquet-rose">🌹</div>
+                        <div class="bouquet-rose">🌹</div>
+                        <div class="bouquet-rose">🌹</div>
+                        <div class="bouquet-rose">🌹</div>
+                        <div class="bouquet-rose">🌹</div>
+                        <div class="bouquet-rose">🌹</div>
+                        <div class="bouquet-rose">🌹</div>
+                        <div class="bouquet-rose">🌹</div>
+                        <div class="bouquet-rose">🌹</div>
+                        <div class="bouquet-rose">🌹</div>
+                        <div class="bouquet-rose">🌹</div>
+                        <div class="bouquet-rose">🌹</div>
+                        <div class="bouquet-rose">🌹</div>
+                        <div class="bouquet-rose">🌹</div>
+                        <div class="bouquet-rose">🌹</div>
+                        <div class="bouquet-rose">🌹</div>
+                    </div>
+                    <div class="ribbon"></div>
+                    <div class="ribbon-tail left"></div>
+                    <div class="ribbon-tail right"></div>
+                    <div class="wrapper"></div>
+                </div>
+                
+                <div class="circle-text" id="circleText"></div>
+            </div>
+        </div>
+
+        <p class="hint" id="hint">Touch the Rose</p>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h2>Dear Arpita</h2>
+            <div class="modal-divider"></div>
+            <p>A beautiful bouquet of roses, each one representing a wish for your happiness.</p>
+            <p>May your day be filled with love and joy.</p>
+            <p class="signature">Happy Rose Day 💐</p>
+            <button class="close-btn" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        let bouquetShown = false;
+
+        // Create circular text
+        const text = "✦ ARPITA ✦ ROSE DAY ✦ BEAUTY ✦ GRACE ✦ ";
+        const circleText = document.getElementById('circleText');
+        const chars = text.split('');
+        const angleDelta = 360 / chars.length;
+
+        chars.forEach((char, i) => {
+            const span = document.createElement('span');
+            span.textContent = char;
+            span.style.transform = `rotate(${i * angleDelta}deg)`;
+            circleText.appendChild(span);
+        });
+
+        // Create falling petals
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            petal.style.left = Math.random() * 100 + 'vw';
+            petal.style.animationDuration = (Math.random() * 5 + 8) + 's';
+            petal.style.animationDelay = Math.random() * 5 + 's';
+            document.body.appendChild(petal);
+
+            setTimeout(() => petal.remove(), 13000);
+        }
+
+        // Gentle petal fall
+        setInterval(createPetal, 800);
+        
+        for (let i = 0; i < 12; i++) {
+            setTimeout(createPetal, i * 500);
+        }
+
+        // Show bouquet function
+        function showBouquet() {
+            if (!bouquetShown) {
+                const wrapper = document.getElementById('roseWrapper');
+                const bouquet = document.getElementById('bouquet');
+                const hint = document.getElementById('hint');
+                
+                wrapper.classList.add('show-bouquet');
+                bouquet.classList.add('active');
+                hint.classList.add('hidden');
+                
+                // Create massive petal burst
+                for (let i = 0; i < 50; i++) {
+                    setTimeout(createPetal, i * 80);
+                }
+                
+                bouquetShown = true;
+                
+                // Show modal after bouquet animation
+                setTimeout(() => {
+                    openModal();
+                }, 2000);
+            }
+        }
+
+        // Modal functions
+        function openModal() {
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        // Keyboard
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+</body>
+</html>
